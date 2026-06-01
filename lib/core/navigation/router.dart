@@ -5,10 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // View placeholders for lazy loading setup
 import '../../features/auth/presentation/screens/onboarding_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
-import '../../features/analytics/presentation/screens/dashboard_screen.dart';
-import '../../features/tasks/presentation/screens/tasks_screen.dart';
-import '../../features/habits/presentation/screens/habits_screen.dart';
-import '../../features/journal/presentation/screens/journal_screen.dart';
+import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/planner/presentation/screens/planner_screen.dart';
+import '../../features/focus/presentation/screens/focus_screen.dart';
+import '../../features/growth/presentation/screens/growth_hub_screen.dart';
+import '../../features/journal/presentation/screens/reflection_hub_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../shared/widgets/responsive_navigation_shell.dart';
 import '../database/database_service.dart';
@@ -66,19 +67,25 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/tasks',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: TasksScreen(),
+              child: PlannerScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/focus',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: FocusScreen(),
             ),
           ),
           GoRoute(
             path: '/habits',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: HabitsScreen(),
+              child: GrowthHubScreen(),
             ),
           ),
           GoRoute(
             path: '/journal',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: JournalScreen(),
+              child: ReflectionHubScreen(),
             ),
           ),
           GoRoute(

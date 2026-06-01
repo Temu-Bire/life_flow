@@ -48,6 +48,9 @@ class TaskModel {
   final String recurrence; // None, Daily, Weekly, Monthly
   final int focusTimeSpent; // in seconds
   final int position;
+  final String? goalId;
+  final DateTime? scheduledStartTime;
+  final int? scheduledDuration; // in minutes
 
   TaskModel({
     required this.id,
@@ -63,6 +66,9 @@ class TaskModel {
     this.recurrence = "None",
     this.focusTimeSpent = 0,
     this.position = 0,
+    this.goalId,
+    this.scheduledStartTime,
+    this.scheduledDuration,
   });
 
   double get progressPercentage {
@@ -85,6 +91,9 @@ class TaskModel {
     String? recurrence,
     int? focusTimeSpent,
     int? position,
+    String? goalId,
+    DateTime? scheduledStartTime,
+    int? scheduledDuration,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -100,6 +109,9 @@ class TaskModel {
       recurrence: recurrence ?? this.recurrence,
       focusTimeSpent: focusTimeSpent ?? this.focusTimeSpent,
       position: position ?? this.position,
+      goalId: goalId ?? this.goalId,
+      scheduledStartTime: scheduledStartTime ?? this.scheduledStartTime,
+      scheduledDuration: scheduledDuration ?? this.scheduledDuration,
     );
   }
 
@@ -118,6 +130,9 @@ class TaskModel {
       'recurrence': recurrence,
       'focusTimeSpent': focusTimeSpent,
       'position': position,
+      'goalId': goalId,
+      'scheduledStartTime': scheduledStartTime?.toIso8601String(),
+      'scheduledDuration': scheduledDuration,
     };
   }
 
@@ -141,6 +156,11 @@ class TaskModel {
       recurrence: map['recurrence'] as String? ?? "None",
       focusTimeSpent: map['focusTimeSpent'] as int? ?? 0,
       position: map['position'] as int? ?? 0,
+      goalId: map['goalId'] as String?,
+      scheduledStartTime: map['scheduledStartTime'] != null
+          ? DateTime.tryParse(map['scheduledStartTime'] as String)
+          : null,
+      scheduledDuration: map['scheduledDuration'] as int?,
     );
   }
 }

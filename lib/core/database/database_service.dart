@@ -10,6 +10,10 @@ class DatabaseService {
   late Box _habitsBox;
   late Box _journalBox;
   late Box _settingsBox;
+  late Box _goalsBox;
+  late Box _focusBox;
+  late Box _notesBox;
+  late Box _reviewsBox;
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -19,9 +23,13 @@ class DatabaseService {
     _habitsBox = await Hive.openBox('habits');
     _journalBox = await Hive.openBox('journal');
     _settingsBox = await Hive.openBox('settings');
+    _goalsBox = await Hive.openBox('goals');
+    _focusBox = await Hive.openBox('focus_sessions');
+    _notesBox = await Hive.openBox('notes');
+    _reviewsBox = await Hive.openBox('reviews');
 
     if (kDebugMode) {
-      print("Hive offline-first database initialized successfully.");
+      print("Hive offline-first database initialized successfully with v2 boxes.");
     }
   }
 
@@ -82,6 +90,82 @@ class DatabaseService {
     await _journalBox.clear();
   }
 
+  // Goal database interfaces
+  List<Map<String, dynamic>> getAllGoals() {
+    return _goalsBox.values
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
+  }
+
+  Future<void> saveGoal(String id, Map<String, dynamic> goalJson) async {
+    await _goalsBox.put(id, goalJson);
+  }
+
+  Future<void> deleteGoal(String id) async {
+    await _goalsBox.delete(id);
+  }
+
+  Future<void> clearAllGoals() async {
+    await _goalsBox.clear();
+  }
+
+  // Focus Session database interfaces
+  List<Map<String, dynamic>> getAllFocusSessions() {
+    return _focusBox.values
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
+  }
+
+  Future<void> saveFocusSession(String id, Map<String, dynamic> sessionJson) async {
+    await _focusBox.put(id, sessionJson);
+  }
+
+  Future<void> deleteFocusSession(String id) async {
+    await _focusBox.delete(id);
+  }
+
+  Future<void> clearAllFocusSessions() async {
+    await _focusBox.clear();
+  }
+
+  // Note/Knowledge database interfaces
+  List<Map<String, dynamic>> getAllNotes() {
+    return _notesBox.values
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
+  }
+
+  Future<void> saveNote(String id, Map<String, dynamic> noteJson) async {
+    await _notesBox.put(id, noteJson);
+  }
+
+  Future<void> deleteNote(String id) async {
+    await _notesBox.delete(id);
+  }
+
+  Future<void> clearAllNotes() async {
+    await _notesBox.clear();
+  }
+
+  // Review/Reflection database interfaces
+  List<Map<String, dynamic>> getAllReviews() {
+    return _reviewsBox.values
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
+  }
+
+  Future<void> saveReview(String id, Map<String, dynamic> reviewJson) async {
+    await _reviewsBox.put(id, reviewJson);
+  }
+
+  Future<void> deleteReview(String id) async {
+    await _reviewsBox.delete(id);
+  }
+
+  Future<void> clearAllReviews() async {
+    await _reviewsBox.clear();
+  }
+
   // Settings database interfaces
   dynamic getSetting(String key, {dynamic defaultValue}) {
     return _settingsBox.get(key, defaultValue: defaultValue);
@@ -98,6 +182,10 @@ class DatabaseService {
       'habits': _habitsBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
       'journal': _journalBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
       'settings': _settingsBox.toMap().map((key, value) => MapEntry(key.toString(), value)),
+      'goals': _goalsBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
+      'focus_sessions': _focusBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
+      'notes': _notesBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
+      'reviews': _reviewsBox.toMap().map((key, value) => MapEntry(key.toString(), Map<String, dynamic>.from(value as Map))),
       'timestamp': DateTime.now().toIso8601String(),
     };
     return jsonEncode(backupData);
@@ -136,6 +224,38 @@ class DatabaseService {
         final settings = backupData['settings'] as Map<String, dynamic>;
         for (var entry in settings.entries) {
           await _settingsBox.put(entry.key, entry.value);
+        }
+      }
+
+      if (backupData.containsKey('goals')) {
+        await _goalsBox.clear();
+        final goals = backupData['goals'] as Map<String, dynamic>;
+        for (var entry in goals.entries) {
+          await _goalsBox.put(entry.key, Map<String, dynamic>.from(entry.value as Map));
+        }
+      }
+
+      if (backupData.containsKey('focus_sessions')) {
+        await _focusBox.clear();
+        final sessions = backupData['focus_sessions'] as Map<String, dynamic>;
+        for (var entry in sessions.entries) {
+          await _focusBox.put(entry.key, Map<String, dynamic>.from(entry.value as Map));
+        }
+      }
+
+      if (backupData.containsKey('notes')) {
+        await _notesBox.clear();
+        final notes = backupData['notes'] as Map<String, dynamic>;
+        for (var entry in notes.entries) {
+          await _notesBox.put(entry.key, Map<String, dynamic>.from(entry.value as Map));
+        }
+      }
+
+      if (backupData.containsKey('reviews')) {
+        await _reviewsBox.clear();
+        final reviews = backupData['reviews'] as Map<String, dynamic>;
+        for (var entry in reviews.entries) {
+          await _reviewsBox.put(entry.key, Map<String, dynamic>.from(entry.value as Map));
         }
       }
 

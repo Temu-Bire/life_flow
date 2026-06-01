@@ -18,11 +18,11 @@ class ResponsiveNavigationShell extends StatelessWidget {
         return 0;
       case '/tasks':
         return 1;
-      case '/habits':
+      case '/focus':
         return 2;
-      case '/journal':
+      case '/habits':
         return 3;
-      case '/settings':
+      case '/journal':
         return 4;
       default:
         return 0;
@@ -38,13 +38,13 @@ class ResponsiveNavigationShell extends StatelessWidget {
         context.go('/tasks');
         break;
       case 2:
-        context.go('/habits');
+        context.go('/focus');
         break;
       case 3:
-        context.go('/journal');
+        context.go('/habits');
         break;
       case 4:
-        context.go('/settings');
+        context.go('/journal');
         break;
     }
   }
@@ -106,11 +106,11 @@ class ResponsiveNavigationShell extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                _buildSidebarItem(context, Icons.dashboard_outlined, Icons.dashboard, "Dashboard", 0, selectedIndex),
-                _buildSidebarItem(context, Icons.task_alt_outlined, Icons.task_alt, "Tasks", 1, selectedIndex),
-                _buildSidebarItem(context, Icons.autorenew_outlined, Icons.autorenew, "Habits", 2, selectedIndex),
-                _buildSidebarItem(context, Icons.book_outlined, Icons.book, "Journal", 3, selectedIndex),
-                _buildSidebarItem(context, Icons.settings_outlined, Icons.settings, "Settings", 4, selectedIndex),
+                _buildSidebarItem(context, Icons.dashboard_outlined, Icons.dashboard, "Home", 0, selectedIndex),
+                _buildSidebarItem(context, Icons.calendar_today_outlined, Icons.calendar_today, "Planner", 1, selectedIndex),
+                _buildSidebarItem(context, Icons.hourglass_empty_outlined, Icons.hourglass_empty, "Focus", 2, selectedIndex),
+                _buildSidebarItem(context, Icons.insights_outlined, Icons.insights, "Growth Hub", 3, selectedIndex),
+                _buildSidebarItem(context, Icons.history_edu_outlined, Icons.history_edu, "Reflection", 4, selectedIndex),
               ],
             ),
           ),
@@ -227,10 +227,10 @@ class ResponsiveNavigationShell extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildBottomNavItem(context, Icons.dashboard_outlined, Icons.dashboard, "Home", 0, selectedIndex),
-              _buildBottomNavItem(context, Icons.task_alt_outlined, Icons.task_alt, "Tasks", 1, selectedIndex),
-              _buildBottomNavItem(context, Icons.autorenew_outlined, Icons.autorenew, "Habits", 2, selectedIndex),
-              _buildBottomNavItem(context, Icons.book_outlined, Icons.book, "Journal", 3, selectedIndex),
-              _buildBottomNavItem(context, Icons.settings_outlined, Icons.settings, "Settings", 4, selectedIndex),
+              _buildBottomNavItem(context, Icons.calendar_today_outlined, Icons.calendar_today, "Planner", 1, selectedIndex),
+              _buildBottomNavItem(context, Icons.hourglass_empty_outlined, Icons.hourglass_empty, "Focus", 2, selectedIndex),
+              _buildBottomNavItem(context, Icons.insights_outlined, Icons.insights, "Growth", 3, selectedIndex),
+              _buildBottomNavItem(context, Icons.history_edu_outlined, Icons.history_edu, "Reflect", 4, selectedIndex),
             ],
           ),
         ),

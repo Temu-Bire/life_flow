@@ -16,6 +16,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final DatabaseService _db = DatabaseService.instance;
   bool _biometricsEnabled = false;
+  bool _journalEncryptionEnabled = false;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void _loadSettings() {
     setState(() {
       _biometricsEnabled = _db.getSetting('biometrics_enabled', defaultValue: false) as bool;
+      _journalEncryptionEnabled = _db.getSetting('journal_encryption_enabled', defaultValue: false) as bool;
     });
   }
 
@@ -44,6 +46,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _toggleEncryption(bool value) async {
+    await _db.saveSetting('journal_encryption_enabled', value);
+    setState(() {
+      _journalEncryptionEnabled = value;
+    });
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(value ? "AES Encryption activated for future logs!" : "Encryption disabled."),
+        backgroundColor: AppColors.success,
+      ),
+    );
   }
 
   void _triggerBackup() {
@@ -255,6 +271,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       onChanged: _toggleBiometrics,
                       title: const Text("Biometric Lock Screen", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       subtitle: const Text("Lock application with device fingerprint/face ID", style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                      activeColor: AppColors.primaryLight,
+                      inactiveTrackColor: Colors.white10,
+                    ),
+                    const Divider(height: 1, color: Colors.white10),
+                    SwitchListTile(
+                      value: _journalEncryptionEnabled,
+                      onChanged: _toggleEncryption,
+                      title: const Text("AES Diary Encryption", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      subtitle: const Text("Encrypt journal logs locally using AES key standard", style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                       activeColor: AppColors.primaryLight,
                       inactiveTrackColor: Colors.white10,
                     ),

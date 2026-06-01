@@ -8,6 +8,7 @@ class HabitModel {
   final int streak;
   final int longestStreak;
   final double consistencyScore;
+  final String? goalId;
 
   HabitModel({
     required this.id,
@@ -19,6 +20,7 @@ class HabitModel {
     this.streak = 0,
     this.longestStreak = 0,
     this.consistencyScore = 0.0,
+    this.goalId,
   });
 
   bool isCompletedOn(DateTime date) {
@@ -35,6 +37,7 @@ class HabitModel {
     int? streak,
     int? longestStreak,
     double? consistencyScore,
+    String? goalId,
   }) {
     return HabitModel(
       id: id ?? this.id,
@@ -46,6 +49,7 @@ class HabitModel {
       streak: streak ?? this.streak,
       longestStreak: longestStreak ?? this.longestStreak,
       consistencyScore: consistencyScore ?? this.consistencyScore,
+      goalId: goalId ?? this.goalId,
     );
   }
 
@@ -60,6 +64,7 @@ class HabitModel {
       'streak': streak,
       'longestStreak': longestStreak,
       'consistencyScore': consistencyScore,
+      'goalId': goalId,
     };
   }
 
@@ -77,6 +82,7 @@ class HabitModel {
       streak: map['streak'] as int? ?? 0,
       longestStreak: map['longestStreak'] as int? ?? 0,
       consistencyScore: (map['consistencyScore'] as num?)?.toDouble() ?? 0.0,
+      goalId: map['goalId'] as String?,
     );
   }
 }
